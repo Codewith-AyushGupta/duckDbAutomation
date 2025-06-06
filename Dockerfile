@@ -1,6 +1,7 @@
 # Use the AWS Lambda Python base image
 FROM public.ecr.aws/lambda/python:3.12-arm64
 
+
 # Set working directory
 WORKDIR /var/task
 
