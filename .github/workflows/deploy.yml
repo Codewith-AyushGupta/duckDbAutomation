@@ -39,6 +39,9 @@ jobs:
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
+      with:
+        platform: linux/arm64
+        install: true
 
     - name: Build and push Docker image
       env:
