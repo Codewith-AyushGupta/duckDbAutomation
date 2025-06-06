@@ -24,6 +24,4 @@ jobs:
       
     - name: Serverless deploy
       run: sls deploy
-      env:
-        # Optional if you're using Serverless Dashboard
-        # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+      
