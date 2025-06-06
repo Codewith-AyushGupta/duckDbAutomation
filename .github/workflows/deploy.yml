@@ -27,4 +27,4 @@ jobs:
     #- run: serverless login --token ${{ secrets.SERVERLESS_ACCESS_TOKEN }}
 
     # Deploy disabling dashboard (Option 2)
-    - run: sls deploy --org null --app null
+    - run: serverless deploy
