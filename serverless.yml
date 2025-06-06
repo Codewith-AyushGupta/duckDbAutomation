@@ -15,3 +15,7 @@ functions:
   handler:
     image:
       name: duckDbAutomationLambda
+  events:
+      - http:
+          path: /
+          method: post
