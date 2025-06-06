@@ -5,7 +5,7 @@ provider:
   name: aws
   runtime: python3.12
   architecture: arm64
-  region: ap-south-1
+  region: ${env:AWS_REGION, 'ap-south-1'}
   ecr:
     images:
       duckDbAutomationLambda:
@@ -15,7 +15,7 @@ functions:
   handler:
     image:
       name: duckDbAutomationLambda
-  events:
+    events:
       - http:
           path: /
           method: post
