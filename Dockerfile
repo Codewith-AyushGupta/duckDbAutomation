@@ -1,18 +1,15 @@
-# Use ARM64 compatible Python image
-FROM public.ecr.aws/lambda/python:3.12-arm64
+# Use ARM64 compatible Python image explicitly
+FROM --platform=linux/arm64 public.ecr.aws/lambda/python:3.12
 
-# Set home directory to avoid IO error in AWS Lambda
-ENV HOME=/tmp
-
-# Set working directory inside container
+# Set working directory
 WORKDIR /var/task
 
-# Install Python dependencies
+# Install dependencies directly into the image (not --target)
 COPY requirements.txt .
-RUN pip install -r requirements.txt --target .
+RUN pip install -r requirements.txt
 
-# Copy the rest of the application code
+# Copy application code
 COPY . .
 
-# Set the Lambda handler entry point
+# Set the Lambda handler
 CMD ["handler.lambda_handler"]
