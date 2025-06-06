@@ -1,0 +1,23 @@
+org: nubystech
+service: duckDbAutomationv2
+
+provider:
+  name: aws
+  runtime: python3.12
+  architecture: arm64
+  region: ap-south-1
+  ecr:
+    images:
+      duckDbAutomationLambda:
+        path: ./    
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource:
+        - arn:aws:s3:::*
+
+functions:
+  handler:
+    image:
+      name: duckDbAutomationLambda
