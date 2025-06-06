@@ -1,10 +1,10 @@
-# Use ARM64 compatible Python image explicitly
-FROM --platform=linux/arm64 public.ecr.aws/lambda/python:3.12
+# Use the AWS Lambda Python base image
+FROM public.ecr.aws/lambda/python:3.12
 
 # Set working directory
 WORKDIR /var/task
 
-# Install dependencies directly into the image (not --target)
+# Install dependencies
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
