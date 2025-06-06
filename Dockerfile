@@ -1,6 +1,5 @@
-# Dockerfile
-
-FROM public.ecr.aws/lambda/python:3.12
+# Use ARM64 compatible Python image
+FROM public.ecr.aws/lambda/python:3.12-arm64
 
 # Set home directory to avoid IO error in AWS Lambda
 ENV HOME=/tmp

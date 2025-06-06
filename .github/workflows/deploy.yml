@@ -22,5 +22,21 @@ jobs:
     - name: Install Serverless Framework v3
       run: npm install -g serverless@3
     
+    - name: Build Docker image
+      run: docker build --platform linux/arm64 -t duckDbAutomationLambda .
+    
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      
+    - name: Push image to Amazon ECR
+      run: |
+        # Get ECR repository URI
+        REPO_URI=$(aws ecr describe-repositories --repository-names duckDbAutomationLambda --query 'repositories[0].repositoryUri' --output text)
+        
+        # Tag and push the image
+        docker tag duckDbAutomationLambda:latest $REPO_URI:latest
+        docker push $REPO_URI:latest
+    
     - name: Serverless deploy
       run: sls deploy

@@ -9,7 +9,8 @@ provider:
   ecr:
     images:
       duckDbAutomationLambda:
-        path: ./    
+        path: ./
+        file: Dockerfile  # Explicitly specify Dockerfile
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -21,3 +22,4 @@ functions:
   handler:
     image:
       name: duckDbAutomationLambda
+      command: ["handler.lambda_handler"]  # Explicitly set the command
