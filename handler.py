@@ -2,7 +2,7 @@ import json
 
 
 def lambda_handler(event, context):
-    print('In Event V5',event)
+    print('In Event V100',event)
     body = {
         "message": "Go to Serverless v4.0! Your function executed successfully!",
     }
