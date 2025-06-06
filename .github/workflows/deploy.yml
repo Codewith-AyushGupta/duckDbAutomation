@@ -7,36 +7,28 @@ on:
 
 jobs:
   deploy:
-    name: deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1
-        
-    - name: Install Serverless Framework v3
-      run: npm install -g serverless@3
-    
-    - name: Build Docker image
-      run: docker build --platform linux/arm64 -t duckDbAutomationLambda .
-    
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-      
-    - name: Push image to Amazon ECR
-      run: |
-        # Get ECR repository URI
-        REPO_URI=$(aws ecr describe-repositories --repository-names duckDbAutomationLambda --query 'repositories[0].repositoryUri' --output text)
-        
-        # Tag and push the image
-        docker tag duckDbAutomationLambda:latest $REPO_URI:latest
-        docker push $REPO_URI:latest
-    
-    - name: Serverless deploy
-      run: sls deploy
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: duckdbautomationlambda  # Lowercase
+        run: |
+          docker build --platform linux/arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY
+
+      - name: Deploy
+        run: sls deploy
