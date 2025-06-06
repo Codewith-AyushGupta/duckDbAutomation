@@ -1,5 +1,5 @@
 org: nubystech
-service: duckDbAutomationv2
+service: duckDbAutomationV3
 
 provider:
   name: aws
@@ -9,17 +9,9 @@ provider:
   ecr:
     images:
       duckDbAutomationLambda:
-        path: ./
-        file: Dockerfile  # Explicitly specify Dockerfile
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - s3:*
-      Resource:
-        - arn:aws:s3:::*
+        path: ./ # Path to folder containing Dockerfile
 
 functions:
   handler:
     image:
       name: duckDbAutomationLambda
-      command: ["handler.lambda_handler"]  # Explicitly set the command
